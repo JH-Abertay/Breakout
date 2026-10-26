@@ -123,15 +123,15 @@ void GameManager::levelComplete()
 
 void GameManager::handleEvent(sf::Event event)
 {
-    if (event.type == sf::Event::KeyPressed && event.key.scancode == sf::Keyboard::Scan::Escape) {
+    if (event.type == sf::Event::KeyPressed && event.key.scancode == sf::Keyboard::Scan::Enter) {
         _nameEntered = true;
-        _leaderboard->sendScore(_name, 2000);
+        _leaderboard->sendScore(_name, _score);
     }
     else if ((_levelComplete || _lives <= 0) && !_nameEntered && event.type == sf::Event::TextEntered && event.text.unicode < 128) {
         _name += static_cast<char>(event.text.unicode);
         if (_name.size() >= 10) {
             _nameEntered = true;
-            _leaderboard->sendScore(_name, 2000);
+            _leaderboard->sendScore(_name, _score);
         }
     }
 
@@ -148,6 +148,7 @@ void GameManager::handleEnterName()
 
 sf::RenderWindow* GameManager::getWindow() const { return _window; }
 UI* GameManager::getUI() const { return _ui; }
+void GameManager::addScore(float scoreToAdd){ _score += scoreToAdd; }
 Paddle* GameManager::getPaddle() const { return _paddle; }
 BrickManager* GameManager::getBrickManager() const { return _brickManager; }
 PowerupManager* GameManager::getPowerupManager() const { return _powerupManager; }

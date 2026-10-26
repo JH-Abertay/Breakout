@@ -27,7 +27,7 @@ public:
     PowerupManager* getPowerupManager() const;
     sf::RenderWindow* getWindow() const;
     UI* getUI() const;
-
+    void addScore(float scoreToAdd);
 
 private:
     bool _pause;
@@ -39,6 +39,7 @@ private:
     bool _nameEntered = false;
     std::string _name = "";
     std::pair<POWERUPS, float> _powerupInEffect;
+    float _score = 0;
 
     sf::Font _font;
     sf::Text _masterText;
