@@ -5,7 +5,7 @@
 
 GameManager::GameManager(sf::RenderWindow* window)
     : _window(window), _paddle(nullptr), _ball(nullptr), _brickManager(nullptr), _powerupManager(nullptr),
-    _messagingSystem(nullptr), _ui(nullptr), _pause(false), _time(0.f), _lives(3), _pauseHold(0.f), _levelComplete(false),
+    _messagingSystem(nullptr), _ui(nullptr), _leaderboard(nullptr), _pause(false), _time(0.f), _lives(3), _pauseHold(0.f), _levelComplete(false),
     _powerupInEffect({ none,0.f }), _timeLastPowerupSpawned(0.f)
 {
     _font.loadFromFile("font/montS.ttf");
@@ -23,6 +23,7 @@ void GameManager::initialize()
     _ball = new Ball(_window, 400.0f, this); 
     _powerupManager = new PowerupManager(_window, _paddle, _ball);
     _ui = new UI(_window, _lives, this);
+    _leaderboard = new LocalLeaderboard(_window);
 
     // Create bricks
     _brickManager->createBricks(5, 10, 80.0f, 30.0f, 5.0f);
@@ -92,6 +93,10 @@ void GameManager::loseLife()
     _lives--;
     _ui->lifeLost(_lives);
 
+    if (_lives <= 0) {
+        _leaderboard->sendScore("Test", 2000); // fix this
+    }
+
     // TODO screen shake.
 }
 
@@ -103,11 +108,15 @@ void GameManager::render()
     _powerupManager->render();
     _window->draw(_masterText);
     _ui->render();
+    if (_levelComplete || _lives <= 0) {
+        _leaderboard->render();
+    }
 }
 
 void GameManager::levelComplete()
 {
     _levelComplete = true;
+    _leaderboard->sendScore("Test", 2000); // Fix this
 }
 
 sf::RenderWindow* GameManager::getWindow() const { return _window; }

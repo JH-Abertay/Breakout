@@ -16,6 +16,12 @@
     <Filter Include="Powerups">
       <UniqueIdentifier>{f3758f5c-ad80-41b1-a2fb-fb910363ec2a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Leaderboard">
+      <UniqueIdentifier>{b4472374-c4f6-4b8e-bc06-83e9b27faa0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Leaderboard">
+      <UniqueIdentifier>{241206cd-3fd4-44ad-aa6a-4add44968d6d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -63,6 +69,12 @@
     <ClCompile Include="PowerupFireBall.cpp">
       <Filter>Powerups</Filter>
     </ClCompile>
+    <ClCompile Include="Leaderboard.cpp">
+      <Filter>Source Files\Leaderboard</Filter>
+    </ClCompile>
+    <ClCompile Include="LocalLeaderboard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ball.h">
@@ -109,6 +121,12 @@
     </ClInclude>
     <ClInclude Include="PowerupFireBall.h">
       <Filter>Powerups</Filter>
+    </ClInclude>
+    <ClInclude Include="Leaderboard.h">
+      <Filter>Header Files\Leaderboard</Filter>
+    </ClInclude>
+    <ClInclude Include="LocalLeaderboard.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
