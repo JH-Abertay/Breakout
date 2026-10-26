@@ -123,17 +123,18 @@ void GameManager::levelComplete()
 
 void GameManager::handleEvent(sf::Event event)
 {
-    if ((_levelComplete || _lives <= 0) && !_nameEntered && event.type == sf::Event::TextEntered && event.text.unicode < 128) {
+    if (event.type == sf::Event::KeyPressed && event.key.scancode == sf::Keyboard::Scan::Escape) {
+        _nameEntered = true;
+        _leaderboard->sendScore(_name, 2000);
+    }
+    else if ((_levelComplete || _lives <= 0) && !_nameEntered && event.type == sf::Event::TextEntered && event.text.unicode < 128) {
         _name += static_cast<char>(event.text.unicode);
         if (_name.size() >= 10) {
             _nameEntered = true;
             _leaderboard->sendScore(_name, 2000);
         }
     }
-    if (event.type == sf::Event::KeyPressed && event.key.scancode == sf::Keyboard::Scan::Escape) {
-        _nameEntered = true;
-        _leaderboard->sendScore(_name, 2000);
-    }
+
 }
 
 void GameManager::handleEnterName()
