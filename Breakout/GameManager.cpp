@@ -39,11 +39,13 @@ void GameManager::update(float dt)
     if (_lives <= 0)
     {
         _masterText.setString("Game over.");
+        handleEnterName();
         return;
     }
     if (_levelComplete)
     {
         _masterText.setString("Level completed.");
+        handleEnterName();
         return;
     }
     // pause and pause handling
@@ -94,7 +96,7 @@ void GameManager::loseLife()
     _ui->lifeLost(_lives);
 
     if (_lives <= 0) {
-        _leaderboard->sendScore("Test", 2000); // fix this
+        _leaderboard->retrieveScore();
     }
 
     // TODO screen shake.
@@ -108,7 +110,7 @@ void GameManager::render()
     _powerupManager->render();
     _window->draw(_masterText);
     _ui->render();
-    if (_levelComplete || _lives <= 0) {
+    if ((_levelComplete || _lives <= 0) && _nameEntered) {
         _leaderboard->render();
     }
 }
@@ -116,7 +118,31 @@ void GameManager::render()
 void GameManager::levelComplete()
 {
     _levelComplete = true;
-    _leaderboard->sendScore("Test", 2000); // Fix this
+    _leaderboard->retrieveScore();
+}
+
+void GameManager::handleEvent(sf::Event event)
+{
+    if ((_levelComplete || _lives <= 0) && !_nameEntered && event.type == sf::Event::TextEntered && event.text.unicode < 128) {
+        _name += static_cast<char>(event.text.unicode);
+        if (_name.size() >= 10) {
+            _nameEntered = true;
+            _leaderboard->sendScore(_name, 2000);
+        }
+    }
+    if (event.type == sf::Event::KeyPressed && event.key.scancode == sf::Keyboard::Scan::Escape) {
+        _nameEntered = true;
+        _leaderboard->sendScore(_name, 2000);
+    }
+}
+
+void GameManager::handleEnterName()
+{
+    if (_nameEntered) {
+        return;
+    }
+
+    _masterText.setString("Enter Name: " + _name);
 }
 
 sf::RenderWindow* GameManager::getWindow() const { return _window; }
