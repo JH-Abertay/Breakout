@@ -32,7 +32,7 @@ You are to spend between three and eight hours improving this simple Breakout im
 
 # Time Details and Changelist
 2 hours implementing leaderboard
-
+1 hour 30 mins implementing CMake functionality
 ---
 
 ### Change log
