@@ -34,6 +34,7 @@ You are to spend between three and eight hours improving this simple Breakout im
 2 hours implementing leaderboard
 1 hour 30 mins implementing CMake functionality, and getting the game working on Linux
 30 mins upgrading SFML from 2.6.x to 3.1.0
+15 mins adding mouse button inputs to pad
 ---
 
 ### Change log

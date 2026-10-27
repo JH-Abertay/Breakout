@@ -1,5 +1,7 @@
 #include "Paddle.h"
+#include <SFML/Window/Mouse.hpp>
 #include <SFML/Window/Keyboard.hpp>
+#include <SFML/Window/Mouse.hpp>
 
 Paddle::Paddle(sf::RenderWindow* window)
     : _window(window), _width(PADDLE_WIDTH), _timeInNewSize(0.0f), _isAlive(true)
@@ -17,9 +19,11 @@ void Paddle::moveLeft(float dt)
 {
     float position = _sprite.getPosition().x;
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) && position > 0)
-    {
-        _sprite.move(sf::Vector2f(-dt * PADDLE_SPEED, 0));
+    if (position > 0) {
+	    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) || sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+	    {
+	        _sprite.move(sf::Vector2f(-dt * PADDLE_SPEED, 0));
+	    }
     }
 }
 
@@ -27,9 +31,11 @@ void Paddle::moveRight(float dt)
 {
     float position = _sprite.getPosition().x;
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D) && position < _window->getSize().x - _width)
-    {
-        _sprite.move(sf::Vector2f(dt * PADDLE_SPEED, 0));
+    if (position < _window->getSize().x - _width) {
+	    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D) || sf::Mouse::isButtonPressed(sf::Mouse::Button::Right))
+	    {
+	        _sprite.move(sf::Vector2f(dt * PADDLE_SPEED, 0));
+	    }
     }
 }
 
