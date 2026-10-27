@@ -22,6 +22,8 @@ public:
     int getPowerupsSpawned();
     std::pair<POWERUPS, float> getPowerupInEffect();
 
+    float powerup_initial_time = 0;
+
 private:
     sf::RenderWindow* _window;
     Paddle* _paddle;

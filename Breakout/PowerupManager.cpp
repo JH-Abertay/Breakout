@@ -98,6 +98,7 @@ void PowerupManager::checkCollision()
         if (powerup->checkCollisionWithPaddle())
         {
             _powerupInEffect = powerup->applyEffect();
+            powerup_initial_time = _powerupInEffect->second;
             powerup->setAlive(false);
         }
     }

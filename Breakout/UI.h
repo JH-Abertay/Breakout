@@ -1,4 +1,5 @@
 #pragma once
+#include <SFML/Graphics/RectangleShape.hpp>
 #include <vector>
 #include <SFML/Graphics.hpp>
 
@@ -22,6 +23,8 @@ private:
 	sf::RenderWindow* _window;
 	sf::Font _font;
 	sf::Text _powerupText;
+	sf::RectangleShape _progressBar;
+	sf::RectangleShape _progressBarFill;
 
 	std::vector<sf::CircleShape> _lives;
 
