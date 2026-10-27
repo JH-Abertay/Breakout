@@ -4,6 +4,10 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 
+// Interface - Can be inherited from for different types of leaderboards,
+// that all use the same UI interface.
+// ---
+// (E.G. OnlineLeaderboard, LocalLeaderboard)
 class Leaderboard
 {
 public:

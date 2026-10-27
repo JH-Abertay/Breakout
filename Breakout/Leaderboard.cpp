@@ -12,6 +12,10 @@ Leaderboard::Leaderboard(sf::RenderWindow* window)
 	_leaderboardText.setFont(_font);
 }
 
+Leaderboard::~Leaderboard()
+{
+}
+
 void Leaderboard::render()
 {
 	_window->draw(_leaderboardText);

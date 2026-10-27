@@ -1,21 +1,31 @@
 #include "LocalLeaderboard.h"
 #include <algorithm>
+#include <fstream>
 
 LocalLeaderboard::LocalLeaderboard(sf::RenderWindow* window) : Leaderboard(window)
 {
 }
 
+LocalLeaderboard::~LocalLeaderboard()
+{
+}
+
 void LocalLeaderboard::retrieveScore()
 {
-	_scores.push_back(std::pair<std::string, float>("I don't know", 100));
-	_scores.push_back(std::pair<std::string, float>("what I was", 300));
-	_scores.push_back(std::pair<std::string, float>("thinking,", 500));
-	_scores.push_back(std::pair<std::string, float>("leaving my", 200));
-	_scores.push_back(std::pair<std::string, float>("child behind", 650));
-	_scores.push_back(std::pair<std::string, float>("Now I suffer", 120));
-	_scores.push_back(std::pair<std::string, float>("the curse, and", 370));
-	_scores.push_back(std::pair<std::string, float>("now I", 280));
-	_scores.push_back(std::pair<std::string, float>("am blind", 720));
+	std::string line;
+	std::ifstream leaderboardFile(leaderboardFileName);
+
+	_scores.clear();
+
+	if (leaderboardFile.is_open()) {
+		while (std::getline(leaderboardFile, line))
+		{
+			size_t eq_pos = line.find_last_of("=");
+
+			_scores.push_back(std::pair<std::string, int>(line.substr(0, eq_pos), std::atoi(line.substr(eq_pos + 1, std::string::npos).c_str())));
+		}
+		leaderboardFile.close();
+	}
 
 	std::sort(_scores.begin(), _scores.end(), [](std::pair<std::string, float> a, std::pair<std::string, float> b) {
 		return a.second > b.second;
@@ -24,14 +34,24 @@ void LocalLeaderboard::retrieveScore()
 
 void LocalLeaderboard::sendScore(std::string name, float score)
 {
+	// Push the new score back to the vector in memory
 	_scores.push_back(std::pair(name, score));
 	std::sort(_scores.begin(), _scores.end(), [](std::pair<std::string, float> a, std::pair<std::string, float> b) {
 		return a.second > b.second;
 		});
 
+	// Open the leaderboard file
+	std::ofstream leaderboardFile(leaderboardFileName, std::ios::app);
+
+	if (leaderboardFile.is_open()) {
+		leaderboardFile << name << "=" << score << "\n";
+		leaderboardFile.close();
+	}
+
 	std::string leaderboardString = "";
 
-	for (size_t i = 0; i < _scores.size(); i++)
+	// Limit the string to only show 10 scores
+	for (size_t i = 0; i < std::min(_scores.size(), size_t(10)); i++)
 	{
 		leaderboardString += _scores[i].first + ": " + std::to_string((int)_scores[i].second) + "\n";
 	}
