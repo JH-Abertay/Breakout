@@ -49,34 +49,20 @@ target_include_directories(
 
 if(WIN32)
   add_custom_command(
-    TARGET main
+    TARGET ${PROJECT_NAME}
     COMMENT "Copy OpenAL DLL"
     PRE_BUILD
     COMMAND
       ${CMAKE_COMMAND} -E copy
       ${SFML_SOURCE_DIR}/extlibs/bin/$<IF:$<EQUAL:${CMAKE_SIZEOF_VOID_P},8>,x64,x86>/openal32.dll
-      $<TARGET_FILE_DIR:main>
+      $<TARGET_FILE_DIR:${PROJECT_NAME}>
     VERBATIM)
 endif()
 
-# if(${CMAKE_GENERATOR} EQUAL "Ninja Multi-Config")
-#   set(DEBUG_FOLDER_LIST Debug Release RelWithDebInfo)
-#
-#   foreach(dir IN LISTS DEBUG_FOLDER_LIST)
-#     add_custom_command(
-#       TARGET ${PROJECT_NAME}
-#       POST_BUILD
-#       COMMAND
-#         ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/Breakout/font/montS.ttf
-#         ${CMAKE_CURRENT_BINARY_DIR}/${dir}/font/montS.ttf
-#       COMMENT "Copying font to binary directory")
-#   endforeach()
-# else()
 add_custom_command(
   TARGET ${PROJECT_NAME}
   POST_BUILD
   COMMAND
     ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/Breakout/font/montS.ttf
-    ${CMAKE_CURRENT_BINARY_DIR}/font/montS.ttf
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>/font/montS.ttf
   COMMENT "Copying font to binary directory")
-# endif()
