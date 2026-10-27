@@ -12,7 +12,7 @@ PowerupBase::PowerupBase(sf::RenderWindow* window, Paddle* paddle, Ball* ball, f
 
     // Initial position and direction with some variability
     float initialX = spawnX;
-    _sprite.setPosition(initialX, 5);
+    _sprite.setPosition({initialX, 5});
     _direction = { 0.0f, FLOAT_DOWN_SPEED };
 
 }
@@ -30,7 +30,7 @@ void PowerupBase::update(float dt)
     _direction.x = sineWave * AMPLITUDE_OF_FALL; // Adjust the amplitude as needed
 
     // Move the power-up
-    _sprite.move(_direction.x * dt, _direction.y * dt);
+    _sprite.move({_direction.x * dt, _direction.y * dt});
 
     //// Smooth color changes
     //for (int i = 0; i < _colours.size(); ++i)
@@ -55,7 +55,7 @@ void PowerupBase::render()
 
 bool PowerupBase::checkCollisionWithPaddle()
 {
-    if (_sprite.getGlobalBounds().intersects(_paddle->getBounds()))
+    if (_sprite.getGlobalBounds().findIntersection(_paddle->getBounds()).has_value())
     {
         _isAlive = false;
         return true;

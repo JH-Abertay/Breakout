@@ -16,7 +16,7 @@ include(FetchContent)
 FetchContent_Declare(
   SFML
   GIT_REPOSITORY https://github.com/SFML/SFML.git
-  GIT_TAG 2.6.x
+  GIT_TAG 3.1.0
   GIT_SHALLOW ON
   EXCLUDE_FROM_ALL SYSTEM)
 FetchContent_MakeAvailable(SFML)
@@ -40,8 +40,8 @@ target_sources(
           Breakout/PowerupSlowBall.cpp
           Breakout/PowerupSmallPaddle.cpp
           Breakout/UI.cpp)
-target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window
-                                              sfml-system)
+target_link_libraries(${PROJECT_NAME} PRIVATE SFML::Graphics SFML::Window
+                                              SFML::System)
 
 target_include_directories(
   ${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/Breakout/SFML/include"

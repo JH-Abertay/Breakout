@@ -1,14 +1,17 @@
 #include "MessagingSystem.h"
+#include <iostream>
 
-MessagingSystem::MessagingSystem(sf::RenderWindow* window)
+MessagingSystem::MessagingSystem(sf::RenderWindow* window) : _message(_font)
 {
 	_window = window;
 	_message.setCharacterSize(24);
-	_font.loadFromFile("font/montS.ttf");
+	if (!_font.openFromFile("font/montS.ttf")) {
+		std::cout << "ERROR: Failed to load font in Leaderboard" << "\n";
+	}
 	_message.setFont(_font);
 	_message.setFillColor(sf::Color::White);
-	_message.setPosition(10, 10);
-		
+	_message.setPosition({10, 10});
+
 }
 
 MessagingSystem::~MessagingSystem()
@@ -19,7 +22,7 @@ void MessagingSystem::update(float dt)
 {
 	// early exit
 	if (_timeToDisplay == 0.f) return;
-	
+
 	// increment timer if it should be running, or reset message if expired.
 	if (_messageTimer < _timeToDisplay)
 	{

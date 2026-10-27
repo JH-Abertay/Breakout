@@ -1,26 +1,29 @@
+#include <iostream>
 #include <sstream>
 
 #include "UI.h"
 #include "GameManager.h"
 #include <iomanip>
 
-UI::UI(sf::RenderWindow* window, int lives, GameManager* gameManager) 
-	: _window(window), _gameManager(gameManager)
+UI::UI(sf::RenderWindow* window, int lives, GameManager* gameManager)
+	: _window(window), _gameManager(gameManager), _powerupText(_font)
 {
 	for (int i = lives; i > 0; --i)
 	{
 		sf::CircleShape newLife;
-		newLife.setFillColor(sf::Color::Red);	
+		newLife.setFillColor(sf::Color::Red);
 		newLife.setOutlineColor(sf::Color::Cyan);
 		newLife.setOutlineThickness(4.0f);
 		newLife.setRadius(LIFE_RADIUS);
-		newLife.setPosition((LIFE_RADIUS*2 + LIFE_PADDING) * i, LIFE_PADDING);
+		newLife.setPosition({(LIFE_RADIUS*2 + LIFE_PADDING) * i, LIFE_PADDING});
 		_lives.push_back(newLife);
 	}
 	_powerupText.setCharacterSize(30);
-	_powerupText.setPosition(800, 10);
+	_powerupText.setPosition({800, 10});
 	_powerupText.setFillColor(sf::Color::Cyan);
-	_font.loadFromFile("font/montS.ttf");
+	if (!_font.openFromFile("font/montS.ttf")) {
+		std::cout << "ERROR: Failed to load font in Leaderboard" << "\n";
+	}
 	_powerupText.setFont(_font);
 }
 
@@ -62,7 +65,7 @@ void UI::updatePowerupText(std::pair<POWERUPS, float> powerup)
 		break;
 	case none:
 		_powerupText.setString("");
-		
+
 		break;
 	}
 }

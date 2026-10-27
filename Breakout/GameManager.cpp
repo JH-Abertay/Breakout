@@ -2,15 +2,20 @@
 #include "Ball.h"
 #include "PowerupManager.h"
 #include "LocalLeaderboard.h"
+#include <SFML/Window/Event.hpp>
+#include <SFML/Graphics/Text.hpp>
+#include <SFML/Window/Keyboard.hpp>
+#include <iostream>
 
 GameManager::GameManager(sf::RenderWindow* window)
     : _window(window), _paddle(nullptr), _ball(nullptr), _brickManager(nullptr), _powerupManager(nullptr),
     _messagingSystem(nullptr), _ui(nullptr), _leaderboard(nullptr), _pause(false), _time(0.f), _lives(3), _pauseHold(0.f), _levelComplete(false),
-    _powerupInEffect({ none,0.f }), _timeLastPowerupSpawned(0.f)
+    _powerupInEffect({ none,0.f }), _timeLastPowerupSpawned(0.f), _masterText(_font)
 {
-    _font.loadFromFile("font/montS.ttf");
-    _masterText.setFont(_font);
-    _masterText.setPosition(50, 400);
+    if (!_font.openFromFile("font/montS.ttf")) {
+    	std::cout << "ERROR: Failed to load font in GameManager";
+    }
+    _masterText.setPosition({50, 400});
     _masterText.setCharacterSize(48);
     _masterText.setFillColor(sf::Color::Yellow);
 }
@@ -50,7 +55,7 @@ void GameManager::update(float dt)
     }
     // pause and pause handling
     if (_pauseHold > 0.f) _pauseHold -= dt;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::P))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::P))
     {
         if (!_pause && _pauseHold <= 0.f)
         {
@@ -81,8 +86,8 @@ void GameManager::update(float dt)
     }
 
     // move paddle
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) _paddle->moveRight(dt);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) _paddle->moveLeft(dt);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) _paddle->moveRight(dt);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) _paddle->moveLeft(dt);
 
     // update everything
     _paddle->update(dt);
@@ -123,18 +128,23 @@ void GameManager::levelComplete()
 
 void GameManager::handleEvent(sf::Event event)
 {
-    if (event.type == sf::Event::KeyPressed && event.key.scancode == sf::Keyboard::Scan::Enter) {
-        _nameEntered = true;
-        _leaderboard->sendScore(_name, _score);
+    if (const sf::Event::KeyPressed* keyPressed = event.getIf<sf::Event::KeyPressed>()) {
+    	if (keyPressed->scancode == sf::Keyboard::Scan::Enter) {
+	        _nameEntered = true;
+	        _leaderboard->sendScore(_name, _score);
+     	}
     }
-    else if ((_levelComplete || _lives <= 0) && !_nameEntered && event.type == sf::Event::TextEntered && event.text.unicode < 128) {
-        _name += static_cast<char>(event.text.unicode);
-        if (_name.size() >= 10) {
-            _nameEntered = true;
-            _leaderboard->sendScore(_name, _score);
-        }
+    else if ((_levelComplete || _lives <= 0) && !_nameEntered) {
+    	if (const sf::Event::TextEntered * textEntered = event.getIf<sf::Event::TextEntered>()) {
+     		if (textEntered->unicode < 128) {
+       			_name += static_cast<char>(textEntered->unicode);
+          		if (_name.size() >= 10) {
+	           		_nameEntered = true;
+					_leaderboard->sendScore(_name, _score);
+            	}
+       		}
+     	}
     }
-
 }
 
 void GameManager::handleEnterName()

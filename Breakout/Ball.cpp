@@ -7,7 +7,7 @@ Ball::Ball(sf::RenderWindow* window, float velocity, GameManager* gameManager)
 {
     _sprite.setRadius(RADIUS);
     _sprite.setFillColor(sf::Color::Cyan);
-    _sprite.setPosition(0, 300);
+    _sprite.setPosition({0, 300});
 }
 
 Ball::~Ball()
@@ -29,7 +29,7 @@ void Ball::update(float dt)
         {
             setFireBall(0);    // disable fireball
             _sprite.setFillColor(sf::Color::Cyan);  // back to normal colour.
-        }        
+        }
     }
 
     // Fireball effect
@@ -62,21 +62,21 @@ void Ball::update(float dt)
     // lose life bounce
     if (position.y > windowDimensions.y)
     {
-        _sprite.setPosition(0, 300);
+        _sprite.setPosition({0, 300});
         _direction = { 1, 1 };
         _gameManager->loseLife();
     }
 
     // collision with paddle
-    if (_sprite.getGlobalBounds().intersects(_gameManager->getPaddle()->getBounds()))
+    if (_sprite.getGlobalBounds().findIntersection(_gameManager->getPaddle()->getBounds()).has_value())
     {
         _direction.y *= -1; // Bounce vertically
 
-        float paddlePositionProportion = (_sprite.getPosition().x - _gameManager->getPaddle()->getBounds().left) / _gameManager->getPaddle()->getBounds().width;
+        float paddlePositionProportion = (_sprite.getPosition().x - _gameManager->getPaddle()->getBounds().position.x) / _gameManager->getPaddle()->getBounds().size.x;
         _direction.x = paddlePositionProportion * 2.0f - 1.0f;
 
         // Adjust position to avoid getting stuck inside the paddle
-        _sprite.setPosition(_sprite.getPosition().x, _gameManager->getPaddle()->getBounds().top - 2 * RADIUS);
+        _sprite.setPosition({_sprite.getPosition().x, _gameManager->getPaddle()->getBounds().position.y - 2 * RADIUS});
     }
 
     // collision with bricks
@@ -105,12 +105,12 @@ void Ball::setVelocity(float coeff, float duration)
 
 void Ball::setFireBall(float duration)
 {
-    if (duration) 
+    if (duration)
     {
         _isFireBall = true;
-        _timeWithPowerupEffect = duration;        
+        _timeWithPowerupEffect = duration;
         return;
     }
     _isFireBall = false;
-    _timeWithPowerupEffect = 0.f;    
+    _timeWithPowerupEffect = 0.f;
 }

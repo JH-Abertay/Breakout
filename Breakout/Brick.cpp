@@ -3,7 +3,7 @@
 Brick::Brick(float x, float y, float width, float height)
     : _isDestroyed(false)
 {
-    _shape.setPosition(x, y);
+    _shape.setPosition({x, y});
     _shape.setSize(sf::Vector2f(width, height));
     _shape.setFillColor(sf::Color::Red);
 }
