@@ -42,6 +42,12 @@ You are to spend between three and eight hours improving this simple Breakout im
 * 2025 - Naman made it harder
 * 2026 - William made it easier again
 
+* Implemented local leaderboard that saves scores to file
+* Can build with CMake, and can run on Linux
+* SFML framework now uses 3.1.0
+* Can use either mouse button inputs or keyboard inputs
+* Powerups now have a bar indicating when they will run out
+
 ---
 
 Curse you, fast ball!
