@@ -7,7 +7,7 @@
 #include "PowerupManager.h"
 #include "MessagingSystem.h"
 #include "UI.h"
-#include "LocalLeaderboard.h"
+#include "Leaderboard.h"
 
 
 

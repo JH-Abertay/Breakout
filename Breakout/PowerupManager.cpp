@@ -1,4 +1,9 @@
 #include "PowerupManager.h"
+#include "PowerupBigPaddle.h"
+#include "PowerupFastBall.h"
+#include "PowerupFireBall.h"
+#include "PowerupSlowBall.h"
+#include "PowerupSmallPaddle.h"
 
 
 PowerupManager::PowerupManager(sf::RenderWindow* window, Paddle* paddle, Ball* ball)
@@ -31,7 +36,7 @@ void PowerupManager::update(float dt)
     for (auto it = _powerups.begin(); it != _powerups.end(); )
     {
         checkCollision();
-        
+
         // Delete powerups queued for removal
         (*it)->update(dt);
         if (!(*it)->isAlive())

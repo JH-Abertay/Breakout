@@ -1,5 +1,4 @@
 #include "Leaderboard.h"
-#include <iostream>
 
 Leaderboard::Leaderboard(sf::RenderWindow* window)
 {

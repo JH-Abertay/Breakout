@@ -1,5 +1,4 @@
 #include "Paddle.h"
-#include <iostream>
 
 Paddle::Paddle(sf::RenderWindow* window)
     : _window(window), _width(PADDLE_WIDTH), _timeInNewSize(0.0f), _isAlive(true)
@@ -55,7 +54,7 @@ sf::FloatRect Paddle::getBounds() const
     return _sprite.getGlobalBounds();
 }
 
-// update width by SF of coeff. 
+// update width by SF of coeff.
 // ensure centre remains consistent.
 void Paddle::setWidth(float coeff, float duration)
 {

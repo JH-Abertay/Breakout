@@ -3,7 +3,6 @@
 #include <SFML/Graphics.hpp>
 
 #include "CONSTANTS.h"
-#include "PowerupManager.h"
 
 class GameManager;
 
@@ -19,7 +18,7 @@ public:
 
 private:
 	GameManager* _gameManager;
-	
+
 	sf::RenderWindow* _window;
 	sf::Font _font;
 	sf::Text _powerupText;
@@ -29,4 +28,3 @@ private:
 	static constexpr float LIFE_RADIUS = 15.0f;
 	static constexpr float LIFE_PADDING = 20.0f;
 };
-
